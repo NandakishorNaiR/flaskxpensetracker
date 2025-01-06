@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Expense Tracker</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Daily Expense Tracker</h1>
+
+    <!-- Expense Form -->
+    <form action="/" method="POST" class="expense-form">
+        <label for="category">Category:</label>
+        <select name="category" id="category" required>
+            {% for category in categories %}
+                <option value="{{ category }}">{{ category }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="amount">Amount:</label>
+        <input type="number" step="0.01" min="0" name="amount" id="amount" placeholder="Enter amount" required>
+
+        <button type="submit">Add Expense</button>
+    </form>
+
+    <!-- Summary Section -->
+    <h2>Summary</h2>
+    {% if total > 0 %}
+        <div class="summary">
+            <p><strong>Total Expenses: ${{ total }}</strong></p>
+            <table>
+                <tr>
+                    <th>Category</th>
+                    <th>Amount ($)</th>
+                    <th>Percentage (%)</th>
+                </tr>
+                {% for category, data in expenses.items() %}
+                    <tr>
+                        <td>{{ category }}</td>
+                        <td>{{ data['amount'] | round(2) }}</td>
+                        <td>{{ data['percentage'] | round(2) }}%</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% else %}
+        <p>No expenses recorded yet.</p>
+    {% endif %}
+</div>
+
+</body>
+</html>
